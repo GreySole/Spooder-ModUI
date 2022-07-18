@@ -298,9 +298,9 @@ class App extends React.Component {
         
         
       }else{
-        if(this.state.osc.devMode){
+        if(this.state.osc.devMode || window.location.protocol=="http:"){
           mainContent = <div className="App">
-          <form action={"http://192.168.1.141:3001/mod/authentication"}>
+          <form action={this.state.osc.redirectURI}>
               <button className="modcheck-button" type="submit">Check if you're a mod</button>
             </form>
           </div>;
@@ -338,11 +338,7 @@ class App extends React.Component {
     if(oscSettings.oscURL.startsWith("https://")){
       oscSettings.oscURL = oscSettings.oscURL.substr("https://".length);
     }
-    if(oscSettings.devMode){
-      this.initOSC("192.168.1.141", "3333");
-    }else{
-      this.initOSC(oscSettings.oscURL, null);
-    }
+    this.initOSC(oscSettings.oscURL, oscSettings.oscPort);
     
     let newState = Object.assign(this.state);
     newState.osc = oscSettings;
