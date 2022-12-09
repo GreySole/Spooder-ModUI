@@ -53,6 +53,20 @@ html,body{
   box-sizing:border-box;
 }
 
+.auth-form{
+  display:flex;
+  flex-flow:column;
+}
+
+.auth-form input{
+  margin:5px;
+}
+
+.status-text{
+  color:var(--text-color);
+  font-size:24px;
+}
+
 .modcheck-button{
   background-color: var(--eventcard-unlocked-background);
   padding:5px 15px 5px 15px;

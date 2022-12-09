@@ -1,6 +1,6 @@
 {
   "name": "spooder-modui",
-  "version": "0.3",
+  "version": "0.3.8",
   "description": "Web interface for Spooder",
   "scripts": {
     "start-front": "react-scripts start",
@@ -19,7 +19,7 @@
     "tinycolor2": "^1.4.2",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3000",
   "homepage": "/mod",
   "eslintConfig": {
     "extends": [

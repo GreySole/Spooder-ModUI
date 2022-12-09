@@ -52,7 +52,6 @@ function getAllCSSVars(){
 }
 
 var originalStyle = getAllCSSVars();
-console.log("ORIGINAL STYLE", originalStyle);
 
 class App extends React.Component {
 
@@ -63,9 +62,8 @@ class App extends React.Component {
     this.state.osc = null;
     this.state.loggedIn = false;
     this.state.moduser = null;
-    let urlSearch = new URLSearchParams(window.location.search);
-    let moduser = urlSearch.get("moduser");
-    if(moduser != null){
+    let moduser = localStorage.getItem("moduser");
+    if(moduser != null && moduser != ""){
       this.state.loggedIn = true;
       this.state.moduser = moduser;
     }else{
@@ -76,6 +74,7 @@ class App extends React.Component {
     this.state.navOpen = false;
     this.state.utilOpen = false;
     this.state.utilityURL = null;
+    this.state.status = "initial";
     this.getOSCSettings = this.getOSCSettings.bind(this);
     this.onEventClick = this.onEventClick.bind(this);
     this.onPluginLockClick = this.onPluginLockClick.bind(this);
@@ -85,17 +84,13 @@ class App extends React.Component {
     this.closePluginUtility = this.closePluginUtility.bind(this);
     this.blacklistViewer = this.blacklistViewer.bind(this);
     this.unblacklistViewer = this.unblacklistViewer.bind(this);
-    /*window.onmessage = function(e){
-      console.log(e.data);
-    }*/
+    this.authenticate = this.authenticate.bind(this);
   }
 
   componentDidMount(){
     this.setTheme();
     if(this.state.loggedIn){
       this.getModMap();
-    }else{
-      this.getOSCSettings();
     }
   }
 
@@ -121,14 +116,19 @@ class App extends React.Component {
     if(!this.state.osc){
       await this.getOSCSettings();
     }
-    let modmap = await fetch(window.location.origin+"/mod/utilities?moduser="+this.state.moduser).then(response => response.json());
-    if(modmap.status != "ok"){
+    let modpack = await fetch(window.location.origin+"/mod/utilities?moduser="+this.state.moduser).then(response => response.json());
+    if(modpack.status != "ok"){
       window.location.href = window.location.origin+"/mod";
       return;
     }
-    console.log("GOT MODMAP", modmap);
+    console.log("GOT MODMAP", modpack);
     let newState = Object.assign(this.state);
-    newState.modmap = modmap;
+    newState.modmap = modpack.modmap;
+    newState.loggedIn = true;
+    if(modpack.theme != null){
+      localStorage.setItem("theme", JSON.stringify(modpack.theme));
+      this.setTheme();
+    }
     this.setState(newState);
     //console.log("MOD MAP", modmap);
   }
@@ -211,6 +211,35 @@ class App extends React.Component {
     this.setState(Object.assign(this.state, {modmap:newModmap}));
   }
 
+  authenticate(e){
+    e.preventDefault();
+    let modcode = document.querySelector(".auth-form [name=modcode]").value;
+    let moduser = document.querySelector(".auth-form [name=moduser]").value;
+    
+
+    fetch(window.location.origin+"/mod/authentication",{
+      method:"POST",
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body:JSON.stringify({
+        code:modcode,
+        moduser:moduser
+      })
+    }).then(async response => {
+      let res = await response.json();
+      
+      if(res.status == "active"){
+        if(res.localUser){moduser = res.localUser}
+        localStorage.setItem("moduser", moduser);
+        await this.getModMap();
+
+        this.setState(Object.assign(this.state, {loggedIn:true, status:res.status}));
+      }else{
+        this.setState(Object.assign(this.state, {status:res.status}))
+      }
+      
+    })
+  }
+
   render() {
 
     let navigation = null;
@@ -229,8 +258,6 @@ class App extends React.Component {
         </div>;
     }
     
-    
-    if(this.state.osc != null){
       if(this.state.loggedIn == true){
         
         var mainContent = null;
@@ -247,7 +274,7 @@ class App extends React.Component {
               for(let e in modEvents){
                 if(modEventLocks[e]==true){console.log(modEvents[e].name,"LOCKED")}
                 if(eventGroups[modEvents[e].group] == null){
-                  eventGroups[modEvents[e].group] = []
+                  eventGroups[modEvents[e].group] = [];
                 }
                 eventGroups[modEvents[e].group].push(
                   <EventCard key={e+"-"+modEventLocks[e]} eventname={e} displayname={modEvents[e].name} islocked={modEventLocks[e]==1} click={this.onEventClick}/>
@@ -290,7 +317,7 @@ class App extends React.Component {
               </div>;
             }else if(this.state.tab == "theme"){
               mainContent = <div className="App">
-                <ThemeEditor editStyle={originalStyle} syncTheme={()=>{this.sendOSC("/mod/"+this.state.moduser+"/sync/theme", localStorage.getItem("theme"))}}/>
+                <ThemeEditor editStyle={originalStyle} saveTheme={()=>{this.sendOSC("/mod/"+this.state.moduser+"/save/theme", localStorage.getItem("theme"))}}/>
               </div>
             }
           }
@@ -298,30 +325,48 @@ class App extends React.Component {
         
         
       }else{
-        if(this.state.osc.devMode || window.location.protocol=="http:"){
+        if(this.state.status == "initial"){
+          if(window.location.protocol=="http:"){
+            mainContent = <div className="App">
+              <form className="auth-form" onSubmit={this.authenticate}>
+                <input type="hidden" name="moduser" value="local"/>
+                <input type="hidden" name="modcode" value="local"/>
+                <button className="modcheck-button" type="submit">Login</button>
+              </form>
+            </div>;
+          }else{
+            mainContent = <div className="App">
+              <form className="auth-form" onSubmit={this.authenticate}>
+                <input type="text" name="moduser" placeholder="Twitch Username"/>
+                <input type="password" name="modcode" placeholder="Password"/>
+                <button className="modcheck-button" type="submit">Login</button>
+              </form>
+            </div>;
+          }
+        }else if(this.state.status == "new"){
           mainContent = <div className="App">
-          <form action={this.state.osc.redirectURI}>
-              <button className="modcheck-button" type="submit">Check if you're a mod</button>
+            <form className="auth-form">
+              <div className="status-text">Got it! Now go into the broadcaster's chat and call '!mod verify' to finish setting your password.</div>
             </form>
-          </div>;
-        }else{
+            </div>;
+        }else if(this.state.status == "stillpending"){
           mainContent = <div className="App">
-            <form action={"https://id.twitch.tv/oauth2/authorize"}>
-              <input type="hidden" name="response_type" value="code"/>
-              <input type="hidden" name="client_id" value={this.state.osc.clientid}/>
-              <input type="hidden" name="redirect_uri" value={this.state.osc.redirectURI}/>
-              <input type="hidden" name="scope" value="moderation:read"/>
-              <button className="modcheck-button" type="submit">Check if you're a mod</button>
+            <form className="auth-form">
+              <div className="status-text">You're still pending verification! Call '!mod verify' in the broadcaster's chat to finish setting your password</div>
             </form>
-          </div>;
+            </div>;
+        }else if(this.state.status=="badpassword"){
+          mainContent = <div className="App">
+            <div className="status-text">Wrong Password...</div>
+            <form className="auth-form" onSubmit={this.authenticate}>
+                <input type="text" name="moduser" placeholder="Twitch Username"/>
+                <input type="password" name="modcode" placeholder="Password"/>
+                <button className="modcheck-button" type="submit">Login</button>
+              </form>
+            </div>;
         }
-        
+
       }
-    }else{
-      mainContent = <div className="App">
-          <h1>Hold on...getting Spooder info.</h1>
-        </div>;
-    }
 
     return <div className="top">
       {navigation}
@@ -428,14 +473,6 @@ class App extends React.Component {
         let newBlacklist = Object.assign(this.state.modmap.modlocks.blacklist);
         newBlacklist[blUser] = message.args[0];
         newState.modmap.modlocks.blacklist = newBlacklist;
-      }else if(address[3] == "sync"){
-        if(address[2] == this.state.moduser){
-          if(address[4] == "theme"){
-            
-            localStorage.setItem("theme", message.args[0]);
-            this.setTheme();
-          }
-        }
       }
       this.setState(newState);
     }

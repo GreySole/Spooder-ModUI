@@ -21,7 +21,7 @@ class ThemeEditor extends React.Component{
             resetStyle: resetStyle,
             editTime:Date.now(),
             currentTheme:savedTheme,
-            syncTheme:props.syncTheme
+            saveTheme:props.saveTheme
         };
 
         this.updateVar = this.updateVar.bind(this);
@@ -87,8 +87,7 @@ class ThemeEditor extends React.Component{
                     </div>
                 </div>
                 <div className="theme-editor-actions">
-                    <button className="modcheck-button" onClick={this.saveTheme}>Save</button>
-                    <button className="modcheck-button" onClick={this.state.syncTheme}>Sync</button>
+                    <button className="modcheck-button" onClick={()=>{this.saveTheme(); this.state.saveTheme();}}>Save</button>
                     <button className="modcheck-button" onClick={this.resetTheme}>Reset</button>
                 </div>
             </div>
