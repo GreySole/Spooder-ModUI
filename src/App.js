@@ -75,7 +75,6 @@ class App extends React.Component {
     this.state.utilOpen = false;
     this.state.utilityURL = null;
     this.state.status = "initial";
-    this.getOSCSettings = this.getOSCSettings.bind(this);
     this.onEventClick = this.onEventClick.bind(this);
     this.onPluginLockClick = this.onPluginLockClick.bind(this);
     this.switchTab = this.switchTab.bind(this);
@@ -113,9 +112,6 @@ class App extends React.Component {
   osc = null;
 
   async getModMap(){
-    if(!this.state.osc){
-      await this.getOSCSettings();
-    }
     let modpack = await fetch(window.location.origin+"/mod/utilities?moduser="+this.state.moduser).then(response => response.json());
     if(modpack.status != "ok"){
       window.location.href = window.location.origin+"/mod";
@@ -123,6 +119,14 @@ class App extends React.Component {
     }
     console.log("GOT MODMAP", modpack);
     let newState = Object.assign(this.state);
+    if(modpack.oscURL.startsWith("https://")){
+      modpack.oscURL = modpack.oscURL.substr("https://".length);
+    }
+    this.initOSC(modpack.oscURL, modpack.oscPort);
+    newState.osc = {
+      oscURL:modpack.oscURL,
+      oscPort:modpack.oscPort
+    }
     newState.modmap = modpack.modmap;
     newState.loggedIn = true;
     if(modpack.theme != null){
@@ -373,21 +377,6 @@ class App extends React.Component {
         <iframe id="PluginUtilityFrame" className={this.state.utilOpen?"open":""} allowFullScreen="true" src={this.state.utilityURL}></iframe>
       {mainContent}
     </div>
-  }
-
-  async getOSCSettings(){
-	
-    var oscSettingsRaw = await fetch(window.location.origin+"/mod/authentication_info").then(response => response.json());
-    oscSettings = oscSettingsRaw;
-    console.log(oscSettings);
-    if(oscSettings.oscURL.startsWith("https://")){
-      oscSettings.oscURL = oscSettings.oscURL.substr("https://".length);
-    }
-    this.initOSC(oscSettings.oscURL, oscSettings.oscPort);
-    
-    let newState = Object.assign(this.state);
-    newState.osc = oscSettings;
-    this.setState(newState);
   }
 
   initOSC(serverIP, serverPort){
