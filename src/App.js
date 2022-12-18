@@ -218,7 +218,7 @@ class App extends React.Component {
   authenticate(e){
     e.preventDefault();
     let modcode = document.querySelector(".auth-form [name=modcode]").value;
-    let moduser = document.querySelector(".auth-form [name=moduser]").value;
+    let moduser = document.querySelector(".auth-form [name=moduser]").value.toLowerCase();
     
 
     fetch(window.location.origin+"/mod/authentication",{
@@ -267,7 +267,6 @@ class App extends React.Component {
         var mainContent = null;
         if(this.state.utilOpen == false){
 
-          console.log("RENDERING");
           if(this.state.modmap){
             let modmap = this.state.modmap;
             
@@ -347,6 +346,12 @@ class App extends React.Component {
               </form>
             </div>;
           }
+        }else if(this.state.status == "active"){
+          mainContent = <div className="App">
+            <form className="auth-form">
+              <div className="status-text">Welcome back, {localStorage.getItem("moduser")}</div>
+            </form>
+            </div>;
         }else if(this.state.status == "new"){
           mainContent = <div className="App">
             <form className="auth-form">
@@ -362,6 +367,15 @@ class App extends React.Component {
         }else if(this.state.status=="badpassword"){
           mainContent = <div className="App">
             <div className="status-text">Wrong Password...</div>
+            <form className="auth-form" onSubmit={this.authenticate}>
+                <input type="text" name="moduser" placeholder="Twitch Username"/>
+                <input type="password" name="modcode" placeholder="Password"/>
+                <button className="modcheck-button" type="submit">Login</button>
+              </form>
+            </div>;
+        }else if(this.state.status=="untrusted"){
+          mainContent = <div className="App">
+            <div className="status-text">You'll need trust from the broadcaster to access this.</div>
             <form className="auth-form" onSubmit={this.authenticate}>
                 <input type="text" name="moduser" placeholder="Twitch Username"/>
                 <input type="password" name="modcode" placeholder="Password"/>
