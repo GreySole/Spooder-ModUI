@@ -448,7 +448,7 @@ class App extends React.Component {
     let address = message.address.split("/");
     if(address[1] == "mod"){
       let newState = Object.assign(this.state);
-      if(address[3] == "lock"){
+      if(address[3] == "lock" || address[3] == "unlock"){
         
         if(address[4] == "event"){
           let eventName = address[5];

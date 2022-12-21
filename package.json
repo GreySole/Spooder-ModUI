@@ -1,6 +1,6 @@
 {
   "name": "spooder-modui",
-  "version": "0.3.8",
+  "version": "0.3.8.1",
   "description": "Web interface for Spooder",
   "scripts": {
     "start-front": "react-scripts start",
