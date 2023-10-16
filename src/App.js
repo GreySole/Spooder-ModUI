@@ -8,6 +8,7 @@ import BlacklistViewer from './BlacklistViewer.js';
 import hamburger from './icons/bars-solid.svg';
 import utilClose from './icons/x-solid.svg';
 import ThemeEditor from './ThemeEditor';
+import Cookies from 'js-cookie';
 
 
 var oscConnected = false;
@@ -61,14 +62,8 @@ class App extends React.Component {
     this.state = {};
     this.state.osc = null;
     this.state.loggedIn = false;
+    this.state.accessToken = Cookies.get("access");
     this.state.moduser = null;
-    let moduser = localStorage.getItem("moduser");
-    if(moduser != null && moduser != ""){
-      this.state.loggedIn = true;
-      this.state.moduser = moduser;
-    }else{
-      this.state.loggedIn = false;
-    }
     this.state.modmap = null;
     this.state.tab = "events";
     this.state.navOpen = false;
@@ -88,9 +83,7 @@ class App extends React.Component {
 
   componentDidMount(){
     this.setTheme();
-    if(this.state.loggedIn){
-      this.getModMap();
-    }
+    this.getModMap();
   }
 
 
@@ -112,9 +105,10 @@ class App extends React.Component {
   osc = null;
 
   async getModMap(){
-    let modpack = await fetch(window.location.origin+"/mod/utilities?moduser="+this.state.moduser).then(response => response.json());
+    
+    let modpack = await fetch(window.location.origin+"/mod/utilities").then(response => response.json());
     if(modpack.status != "ok"){
-      window.location.href = window.location.origin+"/mod";
+      window.location.href = window.location.origin+"/login?return=mod&reason="+modpack.status;
       return;
     }
     console.log("GOT MODMAP", modpack);
@@ -128,6 +122,8 @@ class App extends React.Component {
       oscPort:modpack.oscPort
     }
     newState.modmap = modpack.modmap;
+    newState.moduser = modpack.moduser;
+    newState.accessToken = modpack.token;
     newState.loggedIn = true;
     if(modpack.theme != null){
       localStorage.setItem("theme", JSON.stringify(modpack.theme));
@@ -254,6 +250,8 @@ class App extends React.Component {
             <img src={this.state.utilOpen?utilClose:hamburger} width="50px" height="50px"/>
           </div>
           <div className={"navigation-tab-buttons "+(this.state.navOpen?"open":"")}>
+            <div name='dashboard' className={"navigation-tab-button dashboard "+(this.state.tab=="dashboard"?"active":"")} onClick={this.switchTab}>Dashboard</div>
+            <div name='commands' className={"navigation-tab-button commands "+(this.state.tab=="commands"?"active":"")} onClick={this.switchTab}>Commands</div>
             <div name='events' className={"navigation-tab-button events "+(this.state.tab=="events"?"active":"")} onClick={this.switchTab}>Events</div>
             <div name='plugins' className={"navigation-tab-button plugins "+(this.state.tab=="plugins"?"active":"")} onClick={this.switchTab}>Plugins</div>
             <div name='blacklist' className={"navigation-tab-button blacklist "+(this.state.tab=="blacklist"?"active":"")} onClick={this.switchTab}>Blacklist</div>
@@ -269,8 +267,11 @@ class App extends React.Component {
 
           if(this.state.modmap){
             let modmap = this.state.modmap;
-            
-            if(this.state.tab == "events"){
+            if(this.state.tab == "dashboard"){
+
+            }else if(this.state.tab == "commands"){
+
+            }else if(this.state.tab == "events"){
               let modEvents = modmap.events;
               let modEventLocks = modmap.modlocks.events;
               let eventGroups = {};
@@ -329,66 +330,23 @@ class App extends React.Component {
         
       }else{
         if(this.state.status == "initial"){
-          if(window.location.protocol=="http:"){
-            mainContent = <div className="App">
-              <form className="auth-form" onSubmit={this.authenticate}>
-                <input type="hidden" name="moduser" value="local"/>
-                <input type="hidden" name="modcode" value="local"/>
-                <button className="modcheck-button" type="submit">Login</button>
+          mainContent = <div className="App">
+              <form className="auth-form">
+              <div className="status-text">Getting Login Info...</div>
               </form>
             </div>;
-          }else{
-            mainContent = <div className="App">
-              <form className="auth-form" onSubmit={this.authenticate}>
-                <input type="text" name="moduser" placeholder="Twitch Username"/>
-                <input type="password" name="modcode" placeholder="Password"/>
-                <button className="modcheck-button" type="submit">Login</button>
-              </form>
-            </div>;
-          }
         }else if(this.state.status == "active"){
           mainContent = <div className="App">
             <form className="auth-form">
               <div className="status-text">Welcome back, {localStorage.getItem("moduser")}</div>
             </form>
             </div>;
-        }else if(this.state.status == "new"){
-          mainContent = <div className="App">
-            <form className="auth-form">
-              <div className="status-text">Got it! Now go into the broadcaster's chat and call '!mod verify' to finish setting your password.</div>
-            </form>
-            </div>;
-        }else if(this.state.status == "stillpending"){
-          mainContent = <div className="App">
-            <form className="auth-form">
-              <div className="status-text">You're still pending verification! Call '!mod verify' in the broadcaster's chat to finish setting your password</div>
-            </form>
-            </div>;
-        }else if(this.state.status=="badpassword"){
-          mainContent = <div className="App">
-            <div className="status-text">Wrong Password...</div>
-            <form className="auth-form" onSubmit={this.authenticate}>
-                <input type="text" name="moduser" placeholder="Twitch Username"/>
-                <input type="password" name="modcode" placeholder="Password"/>
-                <button className="modcheck-button" type="submit">Login</button>
-              </form>
-            </div>;
-        }else if(this.state.status=="untrusted"){
-          mainContent = <div className="App">
-            <div className="status-text">You'll need trust from the broadcaster to access this.</div>
-            <form className="auth-form" onSubmit={this.authenticate}>
-                <input type="text" name="moduser" placeholder="Twitch Username"/>
-                <input type="password" name="modcode" placeholder="Password"/>
-                <button className="modcheck-button" type="submit">Login</button>
-              </form>
-            </div>;
         }
-
       }
 
     return <div className="top">
       {navigation}
-        <iframe id="PluginUtilityFrame" className={this.state.utilOpen?"open":""} allowFullScreen="true" src={this.state.utilityURL}></iframe>
+        <iframe id="PluginUtilityFrame" className={this.state.utilOpen?"open":""} allowFullScreen="true" src={this.state.utilityURL+"?moduser="+this.state.moduser}></iframe>
       {mainContent}
     </div>
   }
@@ -437,7 +395,7 @@ class App extends React.Component {
   
   sendOSC(address, message){
     console.log("SENDING", address, message);
-    this.osc.send(new OSC.Message(address, message));
+    this.osc.send(new OSC.Message(address, this.state.accessToken, message));
   }
   
   onOSCOpen(){

@@ -1,6 +1,6 @@
 {
   "name": "spooder-modui",
-  "version": "0.3.8.1",
+  "version": "0.3.9",
   "description": "Web interface for Spooder",
   "scripts": {
     "start-front": "react-scripts start",
@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "js-cookie": "^3.0.5",
     "osc-js": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
