@@ -3,31 +3,30 @@
   "version": "0.3.9",
   "description": "Web interface for Spooder",
   "scripts": {
-    "start-front": "react-scripts start",
-    "build-front": "react-scripts build"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "author": "Grey Sole",
   "license": "GPL-3.0",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@greysole/osc-js": "^2.4.1",
+    "@greysole/spooder-component-library": "^0.1.1",
+    "@reduxjs/toolkit": "^2.2.8",
     "js-cookie": "^3.0.5",
-    "osc-js": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-hook-form": "^7.54.2",
+    "react-redux": "^9.1.2",
+    "sass": "^1.83.4",
+    "spooder-modui": "file:",
     "tinycolor2": "^1.4.2",
     "web-vitals": "^2.1.4"
   },
   "proxy": "http://localhost:3000",
   "homepage": "/mod",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -39,5 +38,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.3",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.6.2"
+  },
+  "overrides": {
+    "typescript": "^5.6.2"
   }
 }

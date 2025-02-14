@@ -1,0 +1,7 @@
+.box.footer {
+  position: fixed;
+  bottom: 0;
+  background-color: var(--color-background-far);
+  outline: solid 2px var(--button-border-color);
+  border-radius: var(--interactive-radius) var(--interactive-radius) 0 0;
+}

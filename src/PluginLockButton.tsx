@@ -1,11 +1,35 @@
-import React from 'react';
-import lockClosed from './icons/lock-solid.svg';
-import lockOpen from './icons/lock-open-solid.svg';
-import defaultIcon from './icons/spider-solid.svg';
-import outArrowBox from './icons/arrow-up-right-from-square-solid.svg';
-import EventCard from './EventCard.js';
+import React from "react";
+import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
+import { Box, Button } from "@greysole/spooder-component-library";
+import useModeration from "./app/hooks/useModeration";
 
-class PluginCard extends React.Component{
+interface PluginLockButtonProps {
+  pluginName: string;
+  pluginDisplayName: string;
+  isLocked: boolean;
+}
+
+export default function PluginLockButton({
+  pluginName,
+  pluginDisplayName,
+  isLocked,
+}: PluginLockButtonProps) {
+  const { setPluginLock } = useModeration();
+  return (
+    <Box margin="small">
+      <Button
+        width="8rem"
+        height="8rem"
+        label={pluginDisplayName}
+        icon={isLocked ? faLock : faLockOpen}
+        iconPosition="top"
+        onClick={() => setPluginLock(pluginName, undefined, !isLocked)}
+      />
+    </Box>
+  );
+}
+
+/*class PluginCard extends React.Component{
     constructor(props){
         super(props);
         //console.log(props.islocked);
@@ -77,4 +101,4 @@ class PluginCard extends React.Component{
     }
 }
 
-export default PluginCard;
+export default PluginCard;*/
