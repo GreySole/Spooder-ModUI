@@ -1,17 +1,18 @@
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import { Box, Button } from "@greysole/spooder-component-library";
 import React from "react";
-import useModeration from "./app/hooks/useModeration";
+import useModeration from "../../../app/hooks/useModeration";
 
-interface EventCardProps {
+interface EventLockButtonProps {
   eventName: string;
   displayName: string;
   isLocked: boolean;
 }
 
-export default function EventCard(props: EventCardProps) {
+export default function EventLockButton(props: EventLockButtonProps) {
   const { eventName, displayName, isLocked } = props;
-  const { setEventLock } = useModeration();
+  const { getSetEventLock } = useModeration();
+  const { setEventLock } = getSetEventLock();
   return (
     <Box margin="small">
       <Button

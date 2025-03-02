@@ -1,12 +1,17 @@
-import { Box, Modal, useTheme } from "@greysole/spooder-component-library";
-import React, { useState } from "react";
+import {
+  Box,
+  Modal,
+  useOSC,
+  useTheme,
+} from "@greysole/spooder-component-library";
+import React, { useEffect, useState } from "react";
 import NavigationMenu from "./ui/navigation/NavigationMenu";
-import useNavigation from "./app/hooks/useNavigation";
-import PluginsTab from "./ui/tab/PluginsTab";
-import Header from "./ui/Header";
-import EventsTab from "./ui/tab/EventsTab";
-import { Footer } from "./ui/Footer";
-import TabContent from "./ui/TabContent";
+import Header from "./ui/navigation/Header";
+import TabContent from "./ui/tab/TabContent";
+import DynamicFooter from "./ui/footer/DynamicFooter";
+import { useDispatch } from "react-redux";
+import { _setEventLock, _setPluginLock } from "./app/slice/modmapSlice";
+import UtilityModalProvider from "./ui/context/UtilityModalContext";
 
 interface AppProps {
   moduser: string;
@@ -14,6 +19,41 @@ interface AppProps {
 }
 export default function App({ modmap }: AppProps) {
   const { isMobileDevice } = useTheme();
+  const { addListener, isReady } = useOSC();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!isReady) return;
+
+    addListener("/mod/*", (message) => {
+      const modCommand = message.address.split("/");
+      const action = modCommand[2];
+      const actionType = modCommand[3];
+      const lockName = modCommand[4];
+      const subLockName = modCommand[5];
+      const isLocked = message.args[0] === 1;
+      console.log("modCommand", modCommand);
+      if (action === "lock") {
+        if (actionType === "event") {
+          dispatch(
+            _setEventLock({
+              isLocked: isLocked,
+              eventName: lockName,
+            })
+          );
+        } else if (actionType === "plugin") {
+          dispatch(
+            _setPluginLock({
+              isLocked: isLocked,
+              pluginName: lockName,
+              subLockName: subLockName,
+            })
+          );
+        }
+      }
+    });
+    console.log("LISTENER ADDED");
+  }, [isReady]);
 
   const height = `calc(100dvh - var(--header-height)${
     isMobileDevice ? "" : " - var(--navigation-tabs-height)"
@@ -23,12 +63,7 @@ export default function App({ modmap }: AppProps) {
     <Box>
       <Header />
       <NavigationMenu />
-      <Modal
-        title="ModUI"
-        content={<div></div>}
-        isOpen={false}
-        onClose={() => {}}
-      />
+
       <Box
         width="100%"
         height={height}
@@ -40,7 +75,11 @@ export default function App({ modmap }: AppProps) {
         flexFlow="column"
         overflow="auto"
       >
-        <TabContent />
+        <UtilityModalProvider>
+          <DynamicFooter>
+            <TabContent />
+          </DynamicFooter>
+        </UtilityModalProvider>
       </Box>
     </Box>
   );

@@ -3,10 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const themeSlice = createSlice({
   name: "theme",
   initialState: {
-    themeColor:
-      localStorage.getItem("themeColor") !== undefined
-        ? JSON.parse(localStorage.getItem("themeColor")!)
-        : "#006e6e",
+    themeVariables:{
+        hue: 0,
+        saturation: 0.5,
+        isDarkTheme: true,
+      },
     customSpooder: {
       parts: {
         bigeyeleft: "o",
@@ -41,20 +42,21 @@ export const themeSlice = createSlice({
     },
   },
   reducers: {
-    _setThemeColor: (state, action) => {
-      state.themeColor = action.payload.themeColor;
+    _setHue: (state, action) => {
+      state.themeVariables.hue = action.payload;
+      localStorage.setItem('themeVariables', JSON.stringify(state.themeVariables));
     },
-    _setCustomSpooder: (state, action) => {
-      if (action.payload.colors) {
-        Object.assign(state.customSpooder.colors, action.payload.colors);
-      }
-      if (action.payload.parts) {
-        Object.assign(state.customSpooder.parts, action.payload.parts);
-      }
+    _setSaturation: (state, action) => {
+      state.themeVariables.saturation = action.payload;
+      localStorage.setItem('themeVariables', JSON.stringify(state.themeVariables));
+    },
+    _setMode: (state, action) => {
+      state.themeVariables.isDarkTheme = action.payload;
+      localStorage.setItem('themeVariables', JSON.stringify(state.themeVariables));
     },
   },
 });
 
-export const { _setThemeColor, _setCustomSpooder } = themeSlice.actions;
+export const { _setHue, _setMode, _setSaturation } = themeSlice.actions;
 
 export default themeSlice.reducer;
