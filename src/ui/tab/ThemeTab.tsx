@@ -1,9 +1,35 @@
-import React from "react";
-import { Box, Button } from "@greysole/spooder-component-library";
+import React, { useEffect } from "react";
+import { Box, Button, useTheme } from "@greysole/spooder-component-library";
 import ThemeColor from "./theme/ThemeColor";
 import { faLockOpen } from "@fortawesome/free-solid-svg-icons";
+import { useFooter } from "../footer/DynamicFooter";
+import useModeration from "../../app/hooks/useModeration";
 
 export default function ThemeTab() {
+  const { setMainSubTabContent } = useFooter();
+  const { getSaveTheme } = useModeration();
+  const { themeVariables } = useTheme();
+  const { saveTheme } = getSaveTheme();
+
+  useEffect(() => {
+    setMainSubTabContent(
+      <Box width="100%" justifyContent="space-between">
+        <Button
+          label="Save"
+          onClick={() =>
+            saveTheme(
+              themeVariables.hue,
+              themeVariables.saturation,
+              themeVariables.isDarkTheme
+            )
+          }
+        />
+      </Box>
+    );
+    return () => {
+      setMainSubTabContent(null);
+    };
+  });
   return (
     <Box width="100%" padding="medium" justifyContent="space-evenly">
       <Box width="50%">

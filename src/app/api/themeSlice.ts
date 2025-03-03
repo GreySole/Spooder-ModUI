@@ -5,7 +5,7 @@ export const themeApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: window.location.origin+"/theme" }),
   endpoints: (builder) => ({
     getModTheme: builder.query({
-      query: (user:string) => "/mod_theme?user="+user,
+      query: () => "/mod_theme",
     }),
     getCustomSpooder: builder.query({
         query: () => "/custom_spooder",

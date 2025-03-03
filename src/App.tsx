@@ -12,6 +12,7 @@ import DynamicFooter from "./ui/footer/DynamicFooter";
 import { useDispatch } from "react-redux";
 import { _setEventLock, _setPluginLock } from "./app/slice/modmapSlice";
 import UtilityModalProvider from "./ui/context/UtilityModalContext";
+import useEvents from "./app/hooks/useEvents";
 
 interface AppProps {
   moduser: string;
@@ -21,6 +22,8 @@ export default function App({ modmap }: AppProps) {
   const { isMobileDevice } = useTheme();
   const { addListener, isReady } = useOSC();
   const dispatch = useDispatch();
+  const { getModCommands } = useEvents();
+  const { refetch } = getModCommands();
 
   useEffect(() => {
     if (!isReady) return;
@@ -49,6 +52,10 @@ export default function App({ modmap }: AppProps) {
               subLockName: subLockName,
             })
           );
+        }
+      } else if (action === "command") {
+        if (actionType === "update") {
+          refetch();
         }
       }
     });

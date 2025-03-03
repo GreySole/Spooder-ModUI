@@ -40,7 +40,7 @@ export default function DynamicFooterProvider(props: DynamicFooterProps) {
         justifyContent="space-between"
         alignItems="center"
       >
-        {mainSubTabContent}
+        <Box>{mainSubTabContent}</Box>
         <Button
           icon={faExclamationTriangle}
           onClick={() => setSubTab("panic")}

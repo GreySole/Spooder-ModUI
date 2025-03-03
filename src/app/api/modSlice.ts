@@ -7,6 +7,9 @@ export const modApi = createApi({
     getModmap: builder.query({
       query: () => "/modmap",
     }),
+    getModCommands: builder.query({
+      query: () => "/get_mod_commands",
+    }),
     setEventLock: builder.mutation({
       query: (form) => ({
         url: "/lock/event",
@@ -40,6 +43,7 @@ export const modApi = createApi({
         url: "/save_theme",
         method: "post",
         body: form,
+        contentType: "application/json",
       }),
     }),
   }),
@@ -47,6 +51,7 @@ export const modApi = createApi({
 
 export const {
   useGetModmapQuery,
+  useGetModCommandsQuery,
   useSetEventLockMutation,
   useSetPluginLockMutation,
   useSetBlacklistMutation,

@@ -62,13 +62,10 @@ export default function useModeration(){
         return {setSpamguard, isLoading, isSuccess, error};
     }
 
-    function getSaveTheme(form:FieldValues){
+    function getSaveTheme(){
         const [saveThemeMutation, {isLoading, isSuccess, error}] = useSaveThemeMutation();
-        function saveTheme(form:FieldValues){
-            const formData = new FormData();
-            formData.append("theme", form.theme);
-
-            saveThemeMutation(formData);
+        function saveTheme(hue:number, saturation:number, isDarkTheme:boolean){
+            saveThemeMutation({hue, saturation, isDarkTheme});
         }
 
         return {saveTheme, isLoading, isSuccess, error};

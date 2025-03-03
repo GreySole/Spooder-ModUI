@@ -2,23 +2,16 @@ import React, { useEffect } from "react";
 import App from "./App";
 import {
   OscProvider,
-  ThemeProvider,
   CircleLoader,
+  Box,
 } from "@greysole/spooder-component-library";
 import useModeration from "./app/hooks/useModeration";
-import useThemeApi from "./app/hooks/useTheme";
 import { useDispatch } from "react-redux";
 import { _setInitialData } from "./app/slice/modmapSlice";
 
 export default function InitLayer() {
   const { getModmap } = useModeration();
-  const { getModTheme, getCustomSpooder } = useThemeApi();
-  //const {data:theme, isLoading:themeLoading, error:themeError} = getModTheme("user");
-  const {
-    data: customSpooder,
-    isLoading: customSpooderLoading,
-    error: customSpooderError,
-  } = getCustomSpooder();
+
   const { data, isLoading, error } = getModmap();
   const dispatch = useDispatch();
 
@@ -28,7 +21,7 @@ export default function InitLayer() {
     dispatch(_setInitialData(data.modmap));
   }, [isLoading]);
 
-  if (error || customSpooderError) {
+  if (error) {
     return (
       <div className="App">
         <div className="locals-only">
@@ -39,21 +32,17 @@ export default function InitLayer() {
     );
   }
 
-  if (isLoading || customSpooderLoading) {
-    return <CircleLoader />;
+  if (isLoading) {
+    return (
+      <Box width="100vw" height="100dvh">
+        <CircleLoader />
+      </Box>
+    );
   }
-
-  const theme = {
-    hue: 0,
-    saturation: 0,
-    isDarkTheme: true,
-  };
 
   return (
     <OscProvider host={data.oscURL} port={data.oscPort}>
-      <ThemeProvider theme={theme} spooder={customSpooder}>
-        <App moduser={data.moduser} modmap={data.modmap} />
-      </ThemeProvider>
+      <App moduser={data.moduser} modmap={data.modmap} />
     </OscProvider>
   );
 }

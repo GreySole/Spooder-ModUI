@@ -10,6 +10,7 @@ export const navigationSlice = createSlice({
   initialState: {
     tabOptions: {
       dashboard: 'Home',
+      events:'Active Events',
       commands: 'Commands',
       plugins: 'Plugins',
       utilities: 'Utilities',

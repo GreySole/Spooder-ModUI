@@ -1,8 +1,8 @@
 import { useGetCustomSpooderQuery, useGetModThemeQuery } from "../api/themeSlice";
 
 export default function useThemeApi(){
-    function getModTheme(user:string){
-        const {data, isLoading, error} = useGetModThemeQuery(user);
+    function getModTheme(){
+        const {data, isLoading, error} = useGetModThemeQuery(null);
         return {data, isLoading, error};
     }
 

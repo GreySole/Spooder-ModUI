@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BoolSwitch,
   Border,
   Box,
   Button,
+  Columns,
   Expandable,
   FormBoolSwitch,
   FormTextInput,
   Stack,
+  TextInput,
   TypeFace,
 } from "@greysole/spooder-component-library";
 import { useFormContext } from "react-hook-form";
-import useEvents from "../../../app/hooks/useEvents";
-import FormCodeInput from "./FormCodeInput";
+import useEvents from "../../../../../app/hooks/useEvents";
+import FormCodeInput from "../../FormCodeInput";
+import ResponseSearchAndMatchCheatSheet from "../cheatSheet/ResponseSearchAndMatchCheatSheet";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
-export default function CreateCommandForm() {
+export default function EditCommandForm() {
   const { getValues } = useFormContext();
   const { getVerifyResponseScript } = useEvents();
   const { verifyResponseScript } = getVerifyResponseScript();
-  const [verifyScriptResponse, setVerifyScriptResponse] = React.useState(
+  const [verifyScriptResponse, setVerifyScriptResponse] = useState(
     "Write your code in the above editor and click Verify Script. The result of the script will print here. Use the Input Message field to simulate a chat message and trigger the command."
   );
-  const [verifyScriptStatus, setVerifyScriptStatus] = React.useState("");
+  const [verifyScriptStatus, setVerifyScriptStatus] = useState("");
+  const [responseCheatSheetOpen, setResponseCheatSheetOpen] = useState(false);
+  const [inputMessage, setInputMessage] = useState("");
+
+  console.log(getValues());
 
   const verifyBorderColor =
     verifyScriptStatus !== ""
@@ -32,7 +40,19 @@ export default function CreateCommandForm() {
 
   return (
     <Stack spacing="medium" padding="medium">
+      <FormBoolSwitch label="Enabled" formKey="enabled" />
       <FormTextInput label="Command" formKey="command" />
+      <Columns spacing="medium">
+        <FormBoolSwitch label="Search and Match" formKey="search" />
+        <Button
+          icon={faQuestionCircle}
+          iconSize="large"
+          onClick={() => {
+            setResponseCheatSheetOpen(!responseCheatSheetOpen);
+          }}
+        />
+      </Columns>
+      <ResponseSearchAndMatchCheatSheet isOpen={responseCheatSheetOpen} />
       <Expandable label="Permissions">
         <FormBoolSwitch label="Broadcaster" formKey="broadcaster" />
         <FormBoolSwitch label="Moderator" formKey="mod" />
@@ -48,14 +68,20 @@ export default function CreateCommandForm() {
                 <TypeFace>{verifyScriptResponse}</TypeFace>
               </Box>
             </Border>
-            <FormTextInput placeholder="Input Message" formKey="inputMessage" />
+            <TextInput
+              placeholder="Input Message"
+              value={inputMessage}
+              onInput={(value) => {
+                setInputMessage(value);
+              }}
+            />
             <Button
               label="Verify Script"
               onClick={() => {
                 const values = getValues();
                 verifyResponseScript(
                   values.command,
-                  values.inputMessage,
+                  inputMessage,
                   values.script
                 ).then((res) => {
                   setVerifyScriptResponse(res.data.response);

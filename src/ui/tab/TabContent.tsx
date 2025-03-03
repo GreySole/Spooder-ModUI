@@ -6,20 +6,20 @@ import PluginsTab from "./PluginsTab";
 import useNavigation from "../../app/hooks/useNavigation";
 import UtilitiesTab from "./UtilitiesTab";
 import ThemeTab from "./ThemeTab";
+import ActiveEventsTab from "./ActiveEventsTab";
 
 export default function TabContent() {
   const { currentTab } = useNavigation();
-  let mainContent = null;
   if (currentTab == "dashboard") {
+  } else if (currentTab == "events") {
+    return <ActiveEventsTab />;
   } else if (currentTab == "commands") {
-    mainContent = <CommandsTab />;
+    return <CommandsTab />;
   } else if (currentTab == "plugins") {
-    mainContent = <PluginsTab />;
+    return <PluginsTab />;
   } else if (currentTab == "utilities") {
-    mainContent = <UtilitiesTab />;
+    return <UtilitiesTab />;
   } else if (currentTab == "theme") {
-    mainContent = <ThemeTab />;
+    return <ThemeTab />;
   }
-
-  return mainContent;
 }
