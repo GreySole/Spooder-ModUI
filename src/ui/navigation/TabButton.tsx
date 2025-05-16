@@ -1,5 +1,5 @@
-import React from 'react';
-import useNavigation from '../../app/hooks/useNavigation';
+import React from "react";
+import useNavigation from "../../app/hooks/useNavigation";
 
 interface TabButtonProps {
   tabName: string;
@@ -11,14 +11,14 @@ export default function TabButton(props: TabButtonProps) {
   const { setTab, currentTab, setNavigation } = useNavigation();
   return (
     <button
-      type='button'
-      className={'tab-button' + (currentTab == tabName ? ' selected' : '')}
+      type="button"
+      className={"tab-button" + (currentTab == tabName ? " selected" : "")}
       onClick={() => {
         setTab(tabName);
         setNavigation(false);
       }}
     >
-      {tabLable}
+      <label>{tabLable}</label>
     </button>
   );
 }

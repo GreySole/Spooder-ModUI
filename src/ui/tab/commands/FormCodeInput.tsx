@@ -6,6 +6,7 @@ import {
   Columns,
   Stack,
   TypeFace,
+  useTheme,
 } from "@greysole/spooder-component-library";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import ResponseCommandCheatSheet from "./modCommands/cheatSheet/ResponseCommandCheatSheet";
@@ -17,6 +18,8 @@ export default function FormCodeInput(props: TextInputProps) {
   const { formKey, label } = props;
   const { register, watch } = useFormContext();
   const [responseCheatSheetOpen, setResponseCheatSheetOpen] = useState(false);
+  const { themeVariables } = useTheme();
+  const { isDarkTheme } = themeVariables;
   const value = watch(formKey);
   return (
     <Stack spacing="small">
@@ -36,7 +39,11 @@ export default function FormCodeInput(props: TextInputProps) {
         className="response-code-editor"
         language="js"
         placeholder="return 'Hello '+event.displayName"
-        style={{ fontSize: "1rem" }}
+        style={{
+          fontSize: "1rem",
+          backgroundColor: isDarkTheme ? "#1e1e1e" : "#ffffff",
+          color: isDarkTheme ? "#ffffff" : "#000000",
+        }}
         value={value}
         {...register(formKey)}
       />

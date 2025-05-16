@@ -11,6 +11,8 @@ export default function ThemeTab() {
   const { themeVariables } = useTheme();
   const { saveTheme } = getSaveTheme();
 
+  console.log("Theme Variables", themeVariables);
+
   useEffect(() => {
     setMainSubTabContent(
       <Box width="100%" justifyContent="space-between">
@@ -29,7 +31,7 @@ export default function ThemeTab() {
     return () => {
       setMainSubTabContent(null);
     };
-  });
+  }, [themeVariables]);
   return (
     <Box width="100%" padding="medium" justifyContent="space-evenly">
       <Box width="50%">
