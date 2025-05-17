@@ -1,75 +1,80 @@
 import { FieldValues } from "react-hook-form";
-import { useGetModmapQuery, useSaveThemeMutation, useSetBlacklistMutation, useSetEventLockMutation, useSetPluginLockMutation, useSetSpamguardMutation } from "../api/modSlice";
+import {
+  useGetModmapQuery,
+  useSaveThemeMutation,
+  useSetBlacklistMutation,
+  useSetEventLockMutation,
+  useSetPluginLockMutation,
+  useSetSpamguardMutation,
+} from "../api/modSlice";
 
-export default function useModeration(){
-    function getModmap(){
-        const {data, isLoading, error} = useGetModmapQuery(null);
-        return {data, isLoading, error};
+export default function useModeration() {
+  function getModmap() {
+    const { data, isLoading, error } = useGetModmapQuery(null);
+    return { data, isLoading, error };
+  }
+
+  function getSetEventLock() {
+    const [setEventLockMutation, { isLoading, isSuccess, error }] =
+      useSetEventLockMutation();
+
+    function setEventLock(eventName: string, isOn: boolean) {
+      setEventLockMutation({ eventName, isOn });
     }
 
-    function getSetEventLock(){
-        const [setEventLockMutation, {isLoading, isSuccess, error}] = useSetEventLockMutation();
+    return { setEventLock, isLoading, isSuccess, error };
+  }
 
-        function setEventLock(eventName:string, isOn:boolean){
-            const formData = new FormData();
-            formData.append("eventName", eventName);
-            formData.append("isOn", isOn.toString());
+  function getSetPluginLock() {
+    const [setPluginLockMutation, { isLoading, isSuccess, error }] =
+      useSetPluginLockMutation();
 
-            setEventLockMutation(formData);
-        }
-
-        return {setEventLock, isLoading, isSuccess, error};
+    function setPluginLock(
+      pluginName: string,
+      subLockName: string | undefined,
+      isOn: boolean
+    ) {
+      setPluginLockMutation({ pluginName, subLockName, isOn });
     }
 
-    function getSetPluginLock(){
-        const [setPluginLockMutation, {isLoading, isSuccess, error}] = useSetPluginLockMutation();
+    return { setPluginLock, isLoading, isSuccess, error };
+  }
 
-        function setPluginLock(pluginName:string, subLockName:string | undefined, isOn:boolean){
-            const formData = new FormData();
-            formData.append("pluginName", pluginName);
-            if(subLockName){
-                formData.append("subLockName", subLockName);
-            }
-            formData.append("isOn", isOn.toString());
+  function getSetBlacklist() {
+    const [setBlacklistMutation, { isLoading, isSuccess, error }] =
+      useSetBlacklistMutation();
+    function setBlacklist(userId: string, isOn: boolean) {
+      setBlacklistMutation({ userId, isOn });
+    }
+    return { setBlacklist, isLoading, isSuccess, error };
+  }
 
-            setPluginLockMutation(formData);
-        }
-        
-        return {setPluginLock, isLoading, isSuccess, error};
+  function getSetSpamguard() {
+    const [setSpamguardMutation, { isLoading, isSuccess, error }] =
+      useSetSpamguardMutation();
+    function setSpamguard(isOn: boolean) {
+      setSpamguardMutation({ isOn });
     }
 
-    function getSetBlacklist(){
-        const [setBlacklistMutation, {isLoading, isSuccess, error}] = useSetBlacklistMutation();
-        function setBlacklist(userId:string, isOn:boolean){
-            const formData = new FormData();
-            formData.append("userId", userId);
-            formData.append("isOn", isOn.toString());
+    return { setSpamguard, isLoading, isSuccess, error };
+  }
 
-            setBlacklistMutation(formData);
-        }
-        return {setBlacklist, isLoading, isSuccess, error};
+  function getSaveTheme() {
+    const [saveThemeMutation, { isLoading, isSuccess, error }] =
+      useSaveThemeMutation();
+    function saveTheme(hue: number, saturation: number, isDarkTheme: boolean) {
+      saveThemeMutation({ hue, saturation, isDarkTheme });
     }
 
-    function getSetSpamguard(){
-        const [setSpamguardMutation, {isLoading, isSuccess, error}] = useSetSpamguardMutation();
-        function setSpamguard(isOn:boolean){
-            const formData = new FormData();
-            formData.append("isOn", isOn.toString());
+    return { saveTheme, isLoading, isSuccess, error };
+  }
 
-            setSpamguardMutation(formData);
-        }
-
-        return {setSpamguard, isLoading, isSuccess, error};
-    }
-
-    function getSaveTheme(){
-        const [saveThemeMutation, {isLoading, isSuccess, error}] = useSaveThemeMutation();
-        function saveTheme(hue:number, saturation:number, isDarkTheme:boolean){
-            saveThemeMutation({hue, saturation, isDarkTheme});
-        }
-
-        return {saveTheme, isLoading, isSuccess, error};
-    }
-
-    return {getModmap, getSetEventLock, getSetPluginLock, getSetBlacklist, getSetSpamguard, getSaveTheme};
+  return {
+    getModmap,
+    getSetEventLock,
+    getSetPluginLock,
+    getSetBlacklist,
+    getSetSpamguard,
+    getSaveTheme,
+  };
 }
