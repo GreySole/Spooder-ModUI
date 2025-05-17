@@ -12,7 +12,7 @@ export function Footer({ children, showFooter }: FooterProps) {
   return (
     <Box
       ref={ref}
-      classes={["footer"]}
+      className="footer"
       width="100%"
       height="var(--footer-height)"
     >

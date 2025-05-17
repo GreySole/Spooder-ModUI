@@ -19,7 +19,7 @@ export default function InitLayer() {
     if (isLoading) return;
     console.log("SET DATA LOADING", data.modmap);
     dispatch(_setInitialData(data.modmap));
-  }, [isLoading]);
+  }, [isLoading, data?.modmap, dispatch]);
 
   if (error) {
     return (

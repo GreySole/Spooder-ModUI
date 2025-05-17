@@ -41,11 +41,7 @@ export default function UtilityModalProvider(props: UtilityModalProviderProps) {
         title={activePlugin?.name ?? "ModUtility"}
         content={
           pluginName !== "" ? (
-            <iframe
-              src={`http://localhost:3000/utility/${pluginName}`}
-              width="100%"
-              height="100%"
-            />
+            <iframe src={`/utility/${pluginName}`} width="100%" height="100%" />
           ) : null
         }
         isOpen={isOpen}
