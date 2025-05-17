@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import CustomSpooder from "./CustomSpooder";
 import NavigationTabs from "./NavigationTabs";
-import { Box, useTheme } from "@greysole/spooder-component-library";
+import { Box, Icon, useTheme } from "@greysole/spooder-component-library";
 import useNavigation from "../../app/hooks/useNavigation";
 
 export default function Header() {
@@ -26,9 +26,7 @@ export default function Header() {
         paddingRight="small"
         onClick={toggleNavigation}
       >
-        <div className="navigation-open-button">
-          <FontAwesomeIcon icon={navigationOpen ? faTimes : faBars} size="2x" />
-        </div>
+        <Icon icon={navigationOpen ? faTimes : faBars} iconSize="xlarge" />
         <CustomSpooder />
       </Box>
       {!isMobileDevice ? <NavigationTabs /> : null}
