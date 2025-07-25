@@ -7,8 +7,8 @@ export const modmapSlice = createSlice({
   initialState: {
     lockdown: 0,
     spamguard: 0,
-    commands:{} as KeyedObject,
-    plugins:{} as KeyedObject,
+    commands: {} as KeyedObject,
+    plugins: {} as KeyedObject,
     activeEvents: {} as KeyedObject,
     eventLocks: {} as KeyedObject,
     pluginLocks: {} as KeyedObject,
@@ -16,7 +16,7 @@ export const modmapSlice = createSlice({
   },
   reducers: {
     _setInitialData: (state, action) => {
-      console.log("SET INITIAL DATA",state.commands,  action.payload.events);
+      console.log("SET INITIAL DATA", state.commands, action.payload.events);
       state.lockdown = action.payload.lockdown;
       state.spamguard = action.payload.spamguard;
       state.commands = action.payload.commands;
@@ -41,17 +41,25 @@ export const modmapSlice = createSlice({
         console.log("PLUGIN SUBLOCK");
         state.plugins[action.payload.pluginName].modmap.locks[
           action.payload.subLockName
-        ] = action.payload.isLocked ? 1:0;
+        ] = action.payload.isLocked ? 1 : 0;
       } else {
         console.log("PLUGIN FULL LOCK");
-        state.pluginLocks[action.payload.pluginName] = action.payload.isLocked ? 1:0;
+        state.pluginLocks[action.payload.pluginName] = action.payload.isLocked
+          ? 1
+          : 0;
       }
     },
     _addActiveEvent: (state, action) => {
+      console.log("ADD ACTIVE EVENT", action.payload);
       state.activeEvents[action.payload.eventName] = action.payload.eventData;
     },
     _removeActiveEvent: (state, action) => {
-      delete state.activeEvents[action.payload.eventName];
+      if (state.activeEvents[action.payload.eventName]) {
+        state.activeEvents[action.payload.eventName].splice(
+          action.payload.index,
+          1
+        );
+      }
     },
   },
 });

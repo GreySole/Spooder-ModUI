@@ -10,7 +10,12 @@ import Header from "./ui/navigation/Header";
 import TabContent from "./ui/tab/TabContent";
 import DynamicFooter from "./ui/footer/DynamicFooter";
 import { useDispatch } from "react-redux";
-import { _setEventLock, _setPluginLock } from "./app/slice/modmapSlice";
+import {
+  _addActiveEvent,
+  _removeActiveEvent,
+  _setEventLock,
+  _setPluginLock,
+} from "./app/slice/modmapSlice";
 import UtilityModalProvider from "./ui/context/UtilityModalContext";
 import useEvents from "./app/hooks/useEvents";
 
@@ -58,6 +63,35 @@ export default function App({ modmap }: AppProps) {
           refetch();
         }
       }
+    });
+
+    addListener("/events/*", (message) => {
+      const eventCommand = message.address.split("/");
+      const eventAction = eventCommand[2];
+      const eventName = eventCommand[3];
+      const commandData = message.args[0];
+      if (eventAction === "start") {
+        dispatch(
+          _addActiveEvent({
+            eventName: eventName,
+            eventData: JSON.parse(commandData),
+          })
+        );
+      } else if (eventAction === "end") {
+        dispatch(
+          _removeActiveEvent({
+            eventName: eventName,
+            eventData: commandData,
+          })
+        );
+      }
+      console.log(
+        "Event Command Received:",
+        eventName,
+        eventAction,
+        commandData
+      );
+      // Handle the event command as needed
     });
     console.log("LISTENER ADDED");
   }, [isReady]);

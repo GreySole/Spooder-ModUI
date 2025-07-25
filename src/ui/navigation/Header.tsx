@@ -1,9 +1,13 @@
 import { faTimes, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import CustomSpooder from "./CustomSpooder";
 import NavigationTabs from "./NavigationTabs";
-import { Box, Icon, useTheme } from "@greysole/spooder-component-library";
+import {
+  Box,
+  Icon,
+  useTheme,
+  CustomSpooder,
+} from "@greysole/spooder-component-library";
 import useNavigation from "../../app/hooks/useNavigation";
 
 export default function Header() {

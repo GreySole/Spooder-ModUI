@@ -62,7 +62,7 @@ export default function CommandsTab() {
     };
   }, [searchText]);
 
-  console.log("EVENTS", modEvents, modEventLocks);
+  console.log("EVENTS", modEvents, modEventLocks, data);
 
   const modCommandGroup = [];
   for (let mc in data) {

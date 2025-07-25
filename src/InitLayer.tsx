@@ -8,6 +8,7 @@ import {
 import useModeration from "./app/hooks/useModeration";
 import { useDispatch } from "react-redux";
 import { _setInitialData } from "./app/slice/modmapSlice";
+import PageCircleLoader from "./ui/general/PageCircleLoader";
 
 export default function InitLayer() {
   const { getModmap } = useModeration();
@@ -35,7 +36,7 @@ export default function InitLayer() {
   if (isLoading) {
     return (
       <Box width="100vw" height="100dvh">
-        <CircleLoader />
+        <PageCircleLoader />
       </Box>
     );
   }
