@@ -1,5 +1,5 @@
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
-import { Box, Button } from "@greysole/spooder-component-library";
+import { Box, Button } from "@spooder/webui-component-library";
 import React from "react";
 import useModeration from "../../../app/hooks/useModeration";
 

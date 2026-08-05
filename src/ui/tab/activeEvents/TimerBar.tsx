@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Stack, TypeFace } from "@greysole/spooder-component-library";
+import { Stack, TypeFace } from "@spooder/webui-component-library";
 import ProgressBar from "./ProgressBar";
 
 interface TimerBarProps {

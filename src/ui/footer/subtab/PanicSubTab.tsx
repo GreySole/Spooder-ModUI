@@ -11,7 +11,7 @@ import {
   Button,
   TypeFace,
   Columns,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import React from "react";
 
 interface PanicSubTabProps {

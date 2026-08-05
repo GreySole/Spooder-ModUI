@@ -7,7 +7,7 @@ import {
   Icon,
   useTheme,
   CustomSpooder,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import useNavigation from "../../app/hooks/useNavigation";
 
 export default function Header() {

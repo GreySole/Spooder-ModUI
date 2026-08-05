@@ -1,11 +1,10 @@
 import React from "react";
 import useEvents from "../../../../../app/hooks/useEvents";
 import CommmandFormProvider from "../CommandFormProvider";
-import { Button, Columns, Modal } from "@greysole/spooder-component-library";
+import { Button, Columns, Modal } from "@spooder/webui-component-library";
 import CreateCommandButton from "../create/CreateCommandButton";
 import CreateCommandForm from "../create/CreateCommandForm";
 import EditCommandForm from "./EditCommandForm";
-import { error } from "console";
 import { useFormContext } from "react-hook-form";
 import EditCommandFooterButtons from "./EditCommandFooterButtons";
 

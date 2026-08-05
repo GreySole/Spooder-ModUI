@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack } from "@greysole/spooder-component-library";
+import { Box, Stack } from "@spooder/webui-component-library";
 import TabButton from "./TabButton";
 import useNavigation from "../../app/hooks/useNavigation";
 

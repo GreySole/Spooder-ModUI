@@ -6,7 +6,7 @@ import {
   Button,
   Modal,
   SearchBar,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../app/store";
 import PluginOpenButton from "./plugins/PluginOpenButton";

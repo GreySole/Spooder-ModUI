@@ -1,4 +1,4 @@
-import { KeyedObject } from "@greysole/spooder-component-library/dist/types/Types";
+import { KeyedObject } from "@spooder/webui-component-library/dist/types/Types";
 import { createSlice } from "@reduxjs/toolkit";
 import navigationSlice from "./navigationSlice";
 

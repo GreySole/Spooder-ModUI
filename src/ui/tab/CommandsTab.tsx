@@ -1,7 +1,7 @@
 import {
   KeyedObject,
   StyleSize,
-} from "@greysole/spooder-component-library/dist/types/Types";
+} from "@spooder/webui-component-library/dist/types/Types";
 import React, { useEffect, useState } from "react";
 import EventLockButton from "./commands/EventLockButton";
 import {
@@ -13,7 +13,7 @@ import {
   SaveButton,
   SearchBar,
   TypeFace,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../app/store";
 import { useFooter } from "../footer/DynamicFooter";

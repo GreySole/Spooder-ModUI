@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../app/store";
-import { Border, Box, TypeFace } from "@greysole/spooder-component-library";
+import { Border, Box, TypeFace } from "@spooder/webui-component-library";
 import EventCommand from "./activeEvents/EventCommand";
 
 export default function ActiveEventsTab() {

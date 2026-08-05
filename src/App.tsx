@@ -3,7 +3,7 @@ import {
   Modal,
   useOSC,
   useTheme,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import React, { useEffect, useState } from "react";
 import NavigationMenu from "./ui/navigation/NavigationMenu";
 import Header from "./ui/navigation/Header";

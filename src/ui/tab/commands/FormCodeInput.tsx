@@ -7,7 +7,7 @@ import {
   Stack,
   TypeFace,
   useTheme,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import ResponseCommandCheatSheet from "./modCommands/cheatSheet/ResponseCommandCheatSheet";
 interface TextInputProps {

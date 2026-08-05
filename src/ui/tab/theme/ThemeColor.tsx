@@ -5,7 +5,7 @@ import {
   Slider,
   BoolSwitch,
   useTheme,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 
 export default function ThemeColor() {
   const {

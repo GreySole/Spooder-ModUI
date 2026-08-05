@@ -1,4 +1,4 @@
-import { KeyedObject } from "@greysole/spooder-component-library/dist/types/Types";
+import { KeyedObject } from "@spooder/webui-component-library/dist/types/Types";
 import React, { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 

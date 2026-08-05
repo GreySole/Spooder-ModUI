@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../app/store";
 import PluginUtilityButton from "./plugins/PluginUtilityButton";
-import { Box, Button, SearchBar } from "@greysole/spooder-component-library";
+import { Box, Button, SearchBar } from "@spooder/webui-component-library";
 import { useFooter } from "../footer/DynamicFooter";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 

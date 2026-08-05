@@ -1,4 +1,4 @@
-import { Box, Button, SearchBar } from "@greysole/spooder-component-library";
+import { Box, Button, SearchBar } from "@spooder/webui-component-library";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import { Footer } from "./Footer";
 import {

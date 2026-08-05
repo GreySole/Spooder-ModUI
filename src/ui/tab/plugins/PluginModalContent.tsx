@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../app/store";
-import { BoolSwitch, Box, TypeFace } from "@greysole/spooder-component-library";
+import { BoolSwitch, Box, TypeFace } from "@spooder/webui-component-library";
 import PluginsLockButton from "./PluginLockButton";
 import useModeration from "../../../app/hooks/useModeration";
 

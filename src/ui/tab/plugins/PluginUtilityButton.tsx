@@ -1,6 +1,6 @@
 import React from "react";
 import { faPlug } from "@fortawesome/free-solid-svg-icons";
-import { Box, Button, ImageFile } from "@greysole/spooder-component-library";
+import { Box, Button, ImageFile } from "@spooder/webui-component-library";
 import useModeration from "../../../app/hooks/useModeration";
 import { useUtilityModal } from "../../context/UtilityModalContext";
 

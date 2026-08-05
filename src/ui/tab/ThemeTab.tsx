@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Button, useTheme } from "@greysole/spooder-component-library";
+import { Box, Button, useTheme } from "@spooder/webui-component-library";
 import ThemeColor from "./theme/ThemeColor";
 import { faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import { useFooter } from "../footer/DynamicFooter";

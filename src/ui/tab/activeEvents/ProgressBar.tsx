@@ -1,4 +1,4 @@
-import { useTheme } from "@greysole/spooder-component-library";
+import { useTheme } from "@spooder/webui-component-library";
 import React from "react";
 
 interface ProgressBarProps {

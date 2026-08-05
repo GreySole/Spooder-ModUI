@@ -1,4 +1,4 @@
-import { Modal } from "@greysole/spooder-component-library";
+import { Modal } from "@spooder/webui-component-library";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../app/store";

@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import useThemeApi from "./app/hooks/useThemeApi";
 import InitLayer from "./InitLayer";
-import { ThemeProvider } from "@greysole/spooder-component-library";
+import { ThemeProvider } from "@spooder/webui-component-library";
 
 export default function ThemeLayer() {
   const { getModTheme, getCustomSpooder } = useThemeApi();

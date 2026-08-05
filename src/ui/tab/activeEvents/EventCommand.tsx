@@ -1,4 +1,4 @@
-import { Box, Stack, TypeFace } from "@greysole/spooder-component-library";
+import { Box, Stack, TypeFace } from "@spooder/webui-component-library";
 import React, { useEffect } from "react";
 import TimerBar from "./TimerBar";
 

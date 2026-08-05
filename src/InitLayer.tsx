@@ -4,7 +4,7 @@ import {
   OscProvider,
   CircleLoader,
   Box,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import useModeration from "./app/hooks/useModeration";
 import { useDispatch } from "react-redux";
 import { _setInitialData } from "./app/slice/modmapSlice";

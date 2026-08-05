@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import CreateCommandForm from "./CreateCommandForm";
-import { Modal } from "@greysole/spooder-component-library";
+import { Modal } from "@spooder/webui-component-library";
 import CreateCommandButton from "./CreateCommandButton";
 import CommmandFormProvider from "../CommandFormProvider";
 

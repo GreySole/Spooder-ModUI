@@ -11,7 +11,7 @@ import {
   Stack,
   TextInput,
   TypeFace,
-} from "@greysole/spooder-component-library";
+} from "@spooder/webui-component-library";
 import { useFormContext } from "react-hook-form";
 import useEvents from "../../../../../app/hooks/useEvents";
 import FormCodeInput from "../../FormCodeInput";
