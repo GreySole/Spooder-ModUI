@@ -1,6 +1,6 @@
 {
   "name": "spooder-modui",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Web interface for Spooder",
   "scripts": {
     "start": "vite --host",
