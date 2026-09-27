@@ -52,7 +52,9 @@ export default function EventEditorForm(props: EventEditorFormProps) {
 
   return (
     <FormProvider {...form}>
-      <Box padding="medium" width="100%">
+      {/* A top-aligned column like the other mod tabs: a default Box centres its children, and
+          once they're taller than the tab the top ends up above the scroll area, out of reach. */}
+      <Box flexFlow="column" alignItems="flex-start" padding="medium" width="100%">
         <Stack spacing="medium" width="100%">
           <Columns spacing="small">
             <TypeFace fontSize="xlarge">Event Editor</TypeFace>
@@ -132,14 +134,21 @@ function GroupSection(props: { group: string; onOpen: (eventId: string) => void 
             <Button icon={faTrash} onClick={() => removeEvent(id)} tooltipText="Delete event" />
           </Columns>
         ))}
+        {/* A fixed width: left to fill the row, the input pushes the button out of view. */}
         <Columns spacing="small">
           <TextInput
+            width="18rem"
             placeholder="Add Event"
             value={newName}
             onInput={setNewName}
             jsonFriendly
           />
-          <Button icon={faPlus} label="Add" onClick={addEvent} disabled={!newName.trim() || nameTaken} />
+          <Button
+            label="Add Event"
+            icon={faPlus}
+            onClick={addEvent}
+            disabled={!newName.trim() || nameTaken}
+          />
         </Columns>
         {nameTaken ? <TypeFace fontSize="medium">That event name is taken.</TypeFace> : null}
       </Stack>

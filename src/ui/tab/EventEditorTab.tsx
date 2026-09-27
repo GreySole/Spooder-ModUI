@@ -1,4 +1,4 @@
-import { TypeFace, useToast } from "@spooder/webui-component-library";
+import { Box, TypeFace, useToast } from "@spooder/webui-component-library";
 import React from "react";
 import {
   useGetEventGraphsQuery,
@@ -19,15 +19,21 @@ export default function EventEditorTab() {
   }
 
   if (error || !data?.graphs) {
-    return <TypeFace fontSize="large">Couldn't load the event editor.</TypeFace>;
+    return (
+      <Box flexFlow="column" padding="medium">
+        <TypeFace fontSize="large">Couldn't load the event editor.</TypeFace>
+      </Box>
+    );
   }
 
   if ((data.groups ?? []).length === 0) {
     return (
+      <Box flexFlow="column" padding="medium">
       <TypeFace fontSize="medium">
         No event groups have been opened to moderators yet. The owner can allow a group from the
         Events tab of the main WebUI.
       </TypeFace>
+      </Box>
     );
   }
 

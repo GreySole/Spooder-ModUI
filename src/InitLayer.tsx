@@ -4,6 +4,8 @@ import {
   OscProvider,
   CircleLoader,
   Box,
+  DialogProvider,
+  ToastProvider,
 } from "@spooder/webui-component-library";
 import useModeration from "./app/hooks/useModeration";
 import { useDispatch } from "react-redux";
@@ -43,7 +45,12 @@ export default function InitLayer() {
 
   return (
     <OscProvider host={data.oscURL} port={data.oscPort}>
-      <App moduser={data.moduser} modmap={data.modmap} />
+      {/* The node editor and the library's modals use toasts and dialogs, which need these. */}
+      <ToastProvider>
+        <DialogProvider>
+          <App moduser={data.moduser} modmap={data.modmap} />
+        </DialogProvider>
+      </ToastProvider>
     </OscProvider>
   );
 }
