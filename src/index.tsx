@@ -5,7 +5,15 @@ import InitLayer from "./InitLayer";
 import { createRoot } from "react-dom/client";
 import "./ui/css/index.scss";
 import ThemeLayer from "./ThemeLayer";
+import startModuleBootstrap from "./modules/bootstrap";
+import loadRemoteModules, { syncActiveModules } from "./modules/loadRemoteModules";
 import { TooltipProvider } from "@spooder/webui-component-library";
+
+// The node editor reads installed WebUI modules (their inspectors and test panels) through the
+// registry, filled after first paint as the remotes arrive.
+startModuleBootstrap();
+syncActiveModules();
+loadRemoteModules();
 
 const rootElement = document.getElementById("app");
 const root = createRoot(rootElement!);

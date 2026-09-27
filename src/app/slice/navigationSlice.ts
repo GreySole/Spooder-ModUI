@@ -10,6 +10,7 @@ export const navigationSlice = createSlice({
   initialState: {
     tabOptions: {
       commands: "Commands",
+      eventeditor: "Event Editor",
       plugins: "Plugins",
       utilities: "Utilities",
       theme: "Theme",

@@ -7,12 +7,15 @@ import useNavigation from "../../app/hooks/useNavigation";
 import UtilitiesTab from "./UtilitiesTab";
 import ThemeTab from "./ThemeTab";
 import ActiveEventsTab from "./ActiveEventsTab";
+import EventEditorTab from "./EventEditorTab";
 
 export default function TabContent() {
   const { currentTab } = useNavigation();
   if (currentTab == "dashboard") {
   } else if (currentTab == "events") {
     return <ActiveEventsTab />;
+  } else if (currentTab == "eventeditor") {
+    return <EventEditorTab />;
   } else if (currentTab == "commands") {
     return <CommandsTab />;
   } else if (currentTab == "plugins") {
