@@ -1,6 +1,6 @@
 {
   "name": "spooder-modui",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Web interface for Spooder",
   "scripts": {
     "start": "vite --host",
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@module-federation/vite": "^1.21.1",
     "@types/node": "^22.10.3",
+    "@types/uuid": "^10.0.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^6.0.3",
